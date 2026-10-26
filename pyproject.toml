@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pdftool"
+version = "0.1.0"
+description = "Herramienta web local para organizar, unir, dividir, rotar y escalar hojas de PDF"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.110",
+    "uvicorn>=0.27",
+    "pymupdf>=1.24",
+    "python-multipart>=0.0.9",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "httpx>=0.27"]
+
+[project.scripts]
+pdftool = "pdftool.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["pdftool*"]
+
+[tool.setuptools.package-data]
+pdftool = ["static/*", "static/vendor/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
