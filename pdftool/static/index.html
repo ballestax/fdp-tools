@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PDF Tool</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="toolbar">
+    <div class="brand">PDF&nbsp;Tool</div>
+
+    <div class="group">
+      <button id="btn-open" class="primary" title="Abrir o agregar PDF (O)">＋ Agregar PDF</button>
+      <input id="file-input" type="file" accept="application/pdf,.pdf" multiple hidden>
+    </div>
+
+    <div class="group">
+      <button id="btn-select-all" title="Seleccionar todo (Ctrl+A)">Todo</button>
+      <button id="btn-select-none" title="Quitar selección (Esc)">Ninguno</button>
+    </div>
+
+    <div class="group" data-needs-selection>
+      <button id="btn-rot-left" title="Rotar a la izquierda (Shift+R)">↺</button>
+      <button id="btn-rot-right" title="Rotar a la derecha (R)">↻</button>
+      <select id="sel-scale" title="Escalar hojas seleccionadas">
+        <option value="" selected disabled>Escalar…</option>
+        <option value="none">Tamaño original</option>
+        <option value="A4">A4</option>
+        <option value="LETTER">Carta</option>
+        <option value="LEGAL">Oficio</option>
+        <option value="A3">A3</option>
+        <option value="A5">A5</option>
+        <option value="factor">Porcentaje…</option>
+      </select>
+      <button id="btn-duplicate" title="Duplicar (Ctrl+D)">Duplicar</button>
+      <button id="btn-delete" class="danger" title="Descartar (Supr)">Descartar</button>
+    </div>
+
+    <div class="group">
+      <button id="btn-undo" title="Deshacer (Ctrl+Z)">↶</button>
+      <button id="btn-redo" title="Rehacer (Ctrl+Y)">↷</button>
+    </div>
+
+    <div class="group grow">
+      <input id="filename" type="text" placeholder="nombre de archivo" title="Nombre del archivo a descargar">
+    </div>
+
+    <div class="group">
+      <button id="btn-export" class="primary" title="Unir todas las hojas en un PDF">Exportar PDF</button>
+      <button id="btn-split-sel" data-needs-selection title="Las hojas seleccionadas forman un archivo">Selección → PDF</button>
+      <button id="btn-split-each" title="Cada hoja (seleccionadas o todas) en un archivo, en ZIP">Cada hoja → PDF</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h2>Documentos</h2>
+      <ul id="doc-list"></ul>
+      <p class="hint" id="doc-empty">Aún no hay documentos.</p>
+      <div class="zoom">
+        <label for="zoom">Tamaño</label>
+        <input id="zoom" type="range" min="110" max="360" step="10" value="180">
+      </div>
+      <details class="help">
+        <summary>Atajos</summary>
+        <ul>
+          <li><kbd>Clic</kbd> seleccionar · <kbd>Ctrl</kbd>+clic alternar · <kbd>Shift</kbd>+clic rango</li>
+          <li>Arrastra para reordenar (arrastra la selección completa)</li>
+          <li><kbd>Doble clic</kbd> vista ampliada</li>
+          <li><kbd>R</kbd> / <kbd>Shift+R</kbd> rotar · <kbd>Supr</kbd> descartar</li>
+          <li><kbd>Ctrl+Z</kbd> deshacer · <kbd>Ctrl+Y</kbd> rehacer · <kbd>Ctrl+D</kbd> duplicar</li>
+        </ul>
+      </details>
+    </aside>
+
+    <main id="workspace">
+      <div id="empty" class="empty">
+        <div class="empty-box">
+          <div class="empty-icon">📄</div>
+          <p><strong>Arrastra archivos PDF aquí</strong></p>
+          <p>o usa <em>＋ Agregar PDF</em></p>
+        </div>
+      </div>
+      <div id="grid" class="grid"></div>
+    </main>
+  </div>
+
+  <footer class="statusbar"><span id="status">0 hojas</span></footer>
+
+  <div id="drop-overlay" class="drop-overlay" hidden><div>Suelta los PDF para agregarlos</div></div>
+
+  <div id="viewer" class="viewer" hidden>
+    <div class="viewer-bar">
+      <span id="viewer-title"></span>
+      <span class="spacer"></span>
+      <button id="viewer-rot-left" title="Rotar a la izquierda">↺</button>
+      <button id="viewer-rot-right" title="Rotar a la derecha">↻</button>
+      <button id="viewer-prev" title="Anterior (←)">‹</button>
+      <button id="viewer-next" title="Siguiente (→)">›</button>
+      <button id="viewer-close" title="Cerrar (Esc)">✕</button>
+    </div>
+    <div id="viewer-stage" class="viewer-stage"></div>
+  </div>
+
+  <div id="busy" class="busy" hidden><div class="spinner"></div><span id="busy-text">Procesando…</span></div>
+  <div id="toasts" class="toasts"></div>
+
+  <script src="/static/vendor/Sortable.min.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
